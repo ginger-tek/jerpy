@@ -1,0 +1,43 @@
+<?php
+
+require 'config.php';
+set_exception_handler(function ($e) {
+  if (ob_get_length() > 0) ob_clean();
+  $str = date('c') . ': ' . str_replace("\n", "\n" . date('c') . ': ', $e) . "\n";
+  file_put_contents('logs/error.log', $str, FILE_APPEND);
+  if (@Config::$friendlyErr) {
+    echo '<head>
+    <title>An Error Has Occurred</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+      body {font-family: Arial, Helvetica, sans-serif;padding: 2em 1em;background: lightcoral;margin: 0 auto;max-width: 800px;}
+      body,a {color: darkred;font-weight: bold;}
+      section {border-left: 4px solid;background: darkred;padding: 0.75em 0 0.25em 1em;margin: 1em 0;color: white;}
+    </style>
+  </head>
+  <body>
+  <header>
+    <h1>Uh oh! An error has occurred</h1>
+  </header>
+  <main>
+    <h3>The page has failed to load due to an internal error. See error details below for more information, or click Go Back to return to the previous page.</h3>
+    <a href="#" onclick="history.back()">Go Back</a>
+    <section>
+      <pre>' . $e->getMessage() . "\r\n -> " . str_replace($_SERVER['DOCUMENT_ROOT'], '', $e->getFile()) . ':' . $e->getLine() . '</pre>
+    </section>
+  </main>
+  </body>';
+  } else http_response_code(500);
+  exit;
+});
+require 'routes.php';
+if (@Config::$timezone) date_default_timezone_set(Config::$timezone);
+ob_start();
+$url = (object)parse_url($_SERVER['REQUEST_URI']);
+if (@$url->query) parse_str($url->query, $url->query);
+$route = (object)(@$routes[$url->path] ?? $routes['/404']);
+$theme = (object)['layout' => 'themes/' . Config::$theme . '/index.php', 'assets' => '/themes/' . Config::$theme . '/assets'];
+include "pages/$route->page";
+$page = (object)['content' => ob_get_clean(), 'meta' => (object)$route->meta];
+include $theme->layout;
+exit;

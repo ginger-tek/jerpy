@@ -1,0 +1,49 @@
+<IfModule mod_rewrite.c>
+
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    ##
+    ## You may need to uncomment the following line for some hosting environments,
+    ## if you have installed to a subdirectory, enter the name here also.
+    ##
+    # RewriteBase /
+
+    ##
+    ## Uncomment following lines to force HTTPS.
+    ##
+    # RewriteCond %{HTTPS} off
+    # RewriteRule (.*) https://%{SERVER_NAME}/$1 [L,R=301]
+
+    ##
+    ## Paths explicitly blocked from being handled by the server
+    ##
+    RewriteRule ^config.php index.php [L,NC]
+    RewriteRule ^logs/.* index.php [L,NC]
+
+    ##
+    ## Paths explicitly handled by the server
+    ##
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_FILENAME} !/.well-known/*
+    RewriteCond %{REQUEST_FILENAME} !/media/.*
+    RewriteCond %{REQUEST_FILENAME} !/themes/.*/(assets|partials)/.*
+    RewriteRule !^index.php index.php [L,NC]
+
+    ##
+    ## Block all PHP files, except index
+    ##
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_FILENAME} \.php$
+    RewriteRule !^index.php index.php [L,NC]
+
+    ##
+    ## Standard routes
+    ##
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+</IfModule>

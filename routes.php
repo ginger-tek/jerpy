@@ -3,28 +3,20 @@
 $routes = [
   '/' => [
     'page' => 'home.php',
-    'meta' => [
-      'title' => 'Welcome!',
-      'desc' => 'This is my website!',
-      'img' => 'https://picsum.photos/400/300'
-    ]
+    'meta_title' => 'Welcome!',
+    'meta_desc' => 'This is my website!',
+    'meta_img' => 'https://picsum.photos/400/300'
   ],
   '/about' => [
     'page' => 'about.php',
-    'meta' => [
-      'title' => 'About Us'
-    ]
+    'meta_title' => 'About Us'
   ],
   '/products' => [
     'page' => 'products.php',
-    'meta' => [
-      'title' => 'Products'
-    ]
+    'meta_title' => 'Products'
   ],
   '/404' => [
     'page' => '404.php',
-    'meta' => [
-      'title' => 'Page Not Found'
-    ]
+    'meta_title' => 'Page Not Found'
   ]
 ];

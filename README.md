@@ -21,6 +21,13 @@ There are 3 directories for content, **pages, themes, and media**, and there are
 - The `routes.php` file contains an associative array of URI paths and their respective page data. Each entry tells the route what page to load, as well as metadata for SEO.
 - The `config.php` file contains a global class with static properties that determine certain behaviors of the site, such as the site name, timezone, theme, and whether to show a friendly error page.
 
+## Routes
+Routes are defined separately from pages to better manage public access to a given page.
+
+Each route has a key, which is the uri path, and an associative array of properties, of which there is always a `page` property pointing to a page to render.
+
+There is an optional `theme` multi-value property to render the page with a specific template, or none at all. Set this to `false` to not use a theme for a given route's page, or set to a valid path to a theme's directory, i.e. `'themes/my-theme'`. When this property is not specified at all, the default theme set in `config.php` will be used.
+
 ## Themes
 Each theme directory must have a `template.php` file and an `assets` directory.
 

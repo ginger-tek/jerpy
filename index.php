@@ -13,12 +13,13 @@ if (@Config::$timezone) date_default_timezone_set(Config::$timezone);
 ob_start();
 $url = (object)parse_url($_SERVER['REQUEST_URI']);
 if (@$url->query) parse_str($url->query, $url->query);
-$theme = (object)['dir' => 'themes/' . Config::$theme];
-$theme->template = "$theme->dir/template.php";
-$theme->assets = "/$theme->dir/assets";
+$pt = fn ($t = null) => (object)['dir' => "themes/$t", 'template' => "themes/$t/template.php", 'assets' => "/themes/$t/assets"];
 $page = (object)(@$routes[$url->path] ?? $routes['/404']);
+$theme = ($pt)(@$page->theme ?? Config::$theme);
 include "pages/$page->page";
 $page->content = ob_get_clean();
-if (!file_exists($theme->template)) throw new Error('Missing template');
-include $theme->template;
+if (@$page->theme !== false) {
+  if (!file_exists($theme->template)) throw new Error('Missing template');
+  include $theme->template;
+} else echo $page->content;
 exit;

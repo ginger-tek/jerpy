@@ -74,7 +74,7 @@ if (@$_GET['logout']) {
       exit;
     }
 
-    $f = ['vendor', 'index.php', 'admin.php', 'logs'];
+    $f = ['config.php', 'media', 'pages', 'themes', 'routes.php'];
     $path = @$_GET['path'] ?? '';
     if ($path && !file_exists($path)) { ?>
       <div class="error">File not found</div>
@@ -96,7 +96,7 @@ if (@$_GET['logout']) {
     $pat = ['{*,.[!.]*,..?*}'];
     if (($path && is_dir($path)) || !$path) {
       if ($path) array_unshift($pat, $path);
-      $items = array_filter(glob(join('/', $pat), GLOB_BRACE), fn ($i) => !in_array($i, $f));
+      $items = array_filter(glob(join('/', $pat), GLOB_BRACE), fn ($i) => in_array($i, $f));
     } else $items = [];
 
     $trail = ['<a href="admin.php">Home</a>'];

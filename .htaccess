@@ -22,6 +22,7 @@
     ## Paths explicitly blocked from being handled by the server
     ##
     RewriteRule ^config.php index.php [L,NC]
+    RewriteRule ^admin.php admin.php [L,NC]
     RewriteRule ^logs/.* index.php [L,NC]
 
     ##

@@ -40,6 +40,7 @@ To help with organization, a `partials` directory is optional to store template 
 ## Theme Template Variables
 You can access the theme and page objects via the `$theme` and `$page` variables within a template or page. Each one is a stdObject with the following properties each:
 - `$theme`
+  - `dir (string)`: relative path to the theme directory
   - `template (string)`: relative path to the theme's `template.php` file
   - `assets (string)`: absolute path to the theme's `assets` directory to `<link>` resources, i.e. css/js
 - `$page`

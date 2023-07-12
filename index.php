@@ -1,25 +1,17 @@
 <?php
 
-require 'config.php';
-set_exception_handler(function ($e) {
-  if (ob_get_length() > 0) ob_clean();
-  $str = date('c') . ': ' . str_replace("\n", "\n" . date('c') . ': ', $e) . "\n";
-  file_put_contents('logs/error.log', $str, FILE_APPEND);
-  echo '<html><head><title>An Error Has Occurred</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body {font-family: Arial, Helvetica, sans-serif;padding: 2em 1em;background: lightcoral;margin: 0 auto;max-width: 800px;}body,a {color: darkred;font-weight: bold;}</style></head><body><header><h1>Uh oh! An error has occurred</h1></header><main><h3>The page has failed to load due to an internal error. Click Go Back to return to the previous page.</h3><a href="#" onclick="history.back()">Go Back</a></main></body></html>';
-  exit;
-});
-require 'routes.php';
-if (@Config::$timezone) date_default_timezone_set(Config::$timezone);
+function eh($e,$s=0,$f=0,$l=0) { ob_clean(); echo '<pre><h1>An error occurred</h1><h2>'
+  .($e instanceof Exception ? $e->getMessage() : "$f:$l - $s").'</h2></pre>'; exit; }
+set_error_handler('eh'); set_exception_handler('eh');
+if(!file_exists('config.json')) throw new Exception('Missing config file');
+$config = json_decode(file_get_contents('config.json'),false, 10, JSON_THROW_ON_ERROR);
+date_default_timezone_set($config->timezone ?? 'America/New_York');
+$req = (object)parse_url($_SERVER['REQUEST_URI'] ?? '/'); parse_str($req->query, $req->query);
+$r = $config->routes->{$req->path} ?? $config->routes->{'/404'};
 ob_start();
-$url = (object)parse_url($_SERVER['REQUEST_URI']);
-if (@$url->query) parse_str($url->query, $url->query);
-$pt = fn ($t = null) => (object)['dir' => "themes/$t", 'template' => "themes/$t/template.php", 'assets' => "/themes/$t/assets"];
-$page = (object)(@$routes[$url->path] ?? $routes['/404']);
-$theme = ($pt)(@$page->theme ?? Config::$theme);
-include "pages/$page->page";
-$page->content = ob_get_clean();
-if (@$page->theme !== false) {
-  if (!file_exists($theme->template)) throw new Error('Missing template');
-  include $theme->template;
-} else echo $page->content;
-exit;
+if(property_exists($r,'page')) file_exists($r->page) ? include $r->page : throw new Exception('Missing page file');
+else echo $r->content ?? throw new Exception('Missing page content');
+$page = (object)['meta'=>$r,'body'=>ob_get_clean()];
+if(property_exists($r,'layout') && !($l = $r->layout)) { echo $page->body; exit; }
+else $l = $config->layout ?? throw new Exception('No global layout defined');
+if(@$l) include "layouts/$l/index.php";

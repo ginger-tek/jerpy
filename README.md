@@ -1,16 +1,14 @@
 # jerpy
 
-## Smallest, flat-file CMS around :)
+## The smallest, flat-file CMS around!
 Jerpy is a simple, flat-file, PHP CMS built for control and simplicity that is easy to install, customize, and maintain.
-**The whole templating engine is just 12-lines of code, and the data structure is only 3 directories and 2 files.**
+**The whole templating engine is under 20-lines of code, and the data structure is only 3 directories and 2 files.**
 
 The CMS was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files.
-However, there is a rudimentary admin panel to manage the files via the browser, just in case.
 
 ## Getting Started
-1. Download release
-2. Upload the files to your web root
-3. Profit
+Just grab the latest release and upload the files to your web root. That's it!
+Create a `layouts` and `pages` directory for your site content, and rename `config.sample.json` to `config.json`
 
 ## Understanding the Structure
 There are 3 directories for content, **pages, themes, and media**, and there are 2 files for configuration, **`config.php` and `routes.php`**.

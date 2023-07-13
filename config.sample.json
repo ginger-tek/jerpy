@@ -1,0 +1,15 @@
+{
+  "siteName": "My Site",
+  "maintenance": true,
+  "layout": "default",
+  "routes": {
+    "/": {
+      "title": "Home",
+      "page": "pages/home.php"
+    },
+    "/404": {
+      "title": "Page Not Found",
+      "page": "pages/404.php"
+    }
+  }
+}

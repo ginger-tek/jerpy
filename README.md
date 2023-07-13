@@ -15,41 +15,75 @@ The CMS was built to be as streamlined and stripped-down as possible, so it's me
 # File Structure
 There are 2 directories for content, `pages` and `layouts`, and just one file for configuration, `config.json`.
 
+## Pages
 The `pages` directory stores all the content for the site, and can be referenced as a file path on the `page` property to render the page for a route.
+```
+🗀 pages
+  🗋 home.php
+  🗋 about.php
+  🗋 404.php
+```
 
+## Layouts
 The `layouts` directory stores layout templates and their assets. The default global theme is set in `config.json` on the `layout` property.
+
+Each layout directory must have a `index.php` file and an `assets` directory. You can organize your CSS, JavaScript, fonts, and images within the `assets` directory as you see fit.
+```
+🗀 layouts
+  🗀 layoutName
+    🗀 assets
+    🗋 index.php
+```
 
 # Routes
 Routes are defined separately from pages to easily manage the content and access of each route.
 
-Each route is defined as a key on the `routes` property in `config.json`, and value is an object whose properties define the route's metadata and page content.
-
-There is an optional `layout` property to render the page with a different layout template than the global default, or without one at all by setting it to `false`.
-
-# Layouts
-Each layout directory must have a `index.php` file and an `assets` directory. You can organize your CSS, JavaScript, fonts, and images within the `assets` directory as you see fit.
-
-A handful of global variables are available for use in the `index.php` of a layout:
-- `(object) $config` -> the site config object
-- `(string) $assets` -> absolute URI to reference CSS, JavaScript, images, etc.
-- `(object) $page` -> the current page object, which contains metadata and rendered content
-
-# Documentation
-
-## config.json
+## Route Properties
+Each route is defined as a key on the `routes` property in `config.json` whose value is an object with properties that define the route's metadata and page content.
 ```json
 {
-  "siteName": "My Site", // string: can be used in layout
-  "maintenance": true, // bool: toggle site-wide maintenance mode; returns HTTP 503 for all routes
-  "layout": "default", // string: default global layout
-  "routes": { // object: key->value store of all routes
-    "/": { // string: route URI
-      "title": "Home", // string: metadata title
-      // add any additional metadata/OpenGraph string properties for SEO (i.e., $page->meta->title in layout)
-      "page": "pages/home.php", // string: use this to render a page file (takes preference over body)
-      "body": "Hello, World!", // string(optional): or use this to specify a raw response body (used if page not defined)
-      "layout": false // string|bool(optional): used to override the default global layout; set to false for no layout
+  "routes": {
+    "/": {
+      "title": "Page Title",
+      "desc": "This is a description of the page for SEO",
+      "img": "https://domain.com/path/to/image/for/seo.jpg",
+      "page": "pages/page.php",
+      "body": "Some text"
     }
   }
 }
 ```
+|Name|Data Type|Required?|Note|
+|---|---|---|---|
+|`title`|`string`|Yes|Page title|
+|`page`|`string`|Conditional|Required if `body` not set. Overwrites `body` value with rendered content|
+|`body`|`string`|Conditional|Required if `page` not set|
+|`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used|
+
+# Templating
+Jerpy relies on the built-in templating functionality of PHP, so use `include` and `require` as you would normally, parsing content as needed, i.e. using [Parsedown](https://github.com/erusev/parsedown) or other utilities.
+
+## Global Variables
+There are 4 global variables you can use in a layout or page file: `$config`, `$req`, `$page`, and `$assets`.
+|Name|Data Type|Note|
+|---|---|---|
+|`$config`|`object`|The stdClass object of `config.json`|
+|`$req`|`object`|The current request, contains properties `path` (string of URI) and `query` (associative array of URL query parameters)|
+|`$page`|`object`|Contains the body content, as well as a `meta` property that inherits all the properties defined by the route object|
+|`$assets`|`string`|Absolute path to the current layout's assets directory|
+
+# Config.json
+```json
+{
+  "siteName": "My Site",
+  "maintenance": false,
+  "layout": "default",
+  "routes": {}
+}
+```
+|Name|Data Type|Note|
+|---|---|---|
+|`siteName`|`string`|Name for site|
+|`maintenance`|`boolean`|Toggle site-wide maintenance mode. When true, returns HTTP 503 for all routes|
+|`layout`|`string`|The default layout to use for routes|
+|`routes`|`object`|Key:value object of all defined routes|

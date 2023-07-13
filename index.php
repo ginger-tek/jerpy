@@ -16,4 +16,4 @@ else echo $r->content ?? throw new Exception('Missing page content');
 $page = (object)['meta'=>$r,'body'=>ob_get_clean()];
 if(property_exists($r,'layout') && !($l = $r->layout)) { echo $page->body; exit; }
 else $l = $config->layout ?? throw new Exception('No global layout defined');
-if(@$l) include "layouts/$l/index.php";
+if(@$l) { $assets = "/layouts/$l/assets"; include "layouts/$l/index.php"; }

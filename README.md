@@ -9,7 +9,8 @@ The CMS was built to be as streamlined and stripped-down as possible, so it's me
 # Getting Started
 1. Grab the latest release and upload the files to your web root
 2. Create a `layouts` and `pages` directory for your site content, and rename `config.sample.json` to `config.json`
-3. Start creating!
+3. Add your first layout directory inside `layouts`
+4. Start adding routes to the `config.json`
 
 # File Structure
 There are 2 directories for content, `pages` and `layouts`, and just one file for configuration, `config.json`.

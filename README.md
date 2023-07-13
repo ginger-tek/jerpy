@@ -7,53 +7,48 @@ Jerpy is a simple, flat-file, PHP CMS built for control and simplicity that is e
 The CMS was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files.
 
 ## Getting Started
-Just grab the latest release and upload the files to your web root. That's it!
-Create a `layouts` and `pages` directory for your site content, and rename `config.sample.json` to `config.json`
+1. Grab the latest release and upload the files to your web root
+2. Create a `layouts` and `pages` directory for your site content, and rename `config.sample.json` to `config.json`
+3. Start creating!
 
-## Understanding the Structure
-There are 3 directories for content, **pages, themes, and media**, and there are 2 files for configuration, **`config.php` and `routes.php`**.
+## File Structure
+There are 2 directories for content, `pages` and `layouts`, and just one file for configuration, `config.json`.
 
-- The pages directory stores the content for each page, while the routing and metadata for the pages is stored in `routes.php`.
-- The themes directory stores each themes' template layout and it's assets, organized by the name of the theme. The current theme is set in `config.php`.
-- The media directory is a place to store any public facing files that you want to host, such as images, PDFs, etc.
-- The `routes.php` file contains an associative array of URI paths and their respective page data. Each entry tells the route what page to load, as well as metadata for SEO.
-- The `config.php` file contains a global class with static properties that determine certain behaviors of the site, such as the site name, timezone, theme, and whether to show a friendly error page.
+The `pages` directory stores the HTML/PHP content for the site, and can be used by setting the `page` property on a route to a page file path.
+
+The `layouts` directory stores layout templates and their assets. The default global theme is set in `config.json` on the `layout` property.
 
 ## Routes
-Routes are defined separately from pages to better manage public access to a given page.
+Routes are defined separately from pages to easily manage the content and access of each route.
 
-Each route has a key, which is the uri path, and an associative array of properties, of which there is always a `page` property pointing to a page to render.
+Each route is defined as a key on the `routes` property in `config.json`, and value is an object whose properties define the route's metadata and page content.
 
-There is an optional `theme` multi-value property to render the page with a specific template, or none at all. Set this to `false` to not use a theme for a given route's page, or set to a valid path to a theme's directory, i.e. `'themes/my-theme'`. When this property is not specified at all, the default theme set in `config.php` will be used.
+There is an optional `layout` property to render the page with a different layout template than the global default, or without one at all by setting it to `false`.
 
-## Themes
-Each theme directory must have a `template.php` file and an `assets` directory.
+## Layouts
+Each layout directory must have a `index.php` file and an `assets` directory. You can organize your CSS, JavaScript, fonts, and images within the `assets` directory as you see fit.
 
-### Partials
-To help with organization, a `partials` directory is optional to store template sections, such as for the header and footer; these can be included using the `$theme-dir` template var with normal syntax:
-```php
-<?php include "$theme-dir/partials/header.php" ?>
+A handful of global variables are available for use in the `index.php` of a layout:
+- `(object) $config` -> the site config object
+- `(string) $assets` -> absolute URI to reference CSS, JavaScript, images, etc.
+- `(object) $page` -> the current page object, which contains metadata and rendered content
+
+# Documentation
+
+## config.json
+```json
+{
+  "siteName": "My Site", // string: can be used in layout
+  "maintenance": true, // bool: toggle site-wide maintenance mode; returns HTTP 503 for all routes
+  "layout": "default", // string: default global layout
+  "routes": { // object: key->value store of all routes
+    "/": { // string: route URI
+      "title": "Home", // string: metadata title
+      // add any additional metadata/OpenGraph properties for SEO
+      "page": "pages/home.php", // string: use this to render a page file (takes preference over body)
+      "body": "Hello, World!", // string: or use this to specify a raw response body (used if page not defined)
+      "layout": false // string|bool: used to override the default global layout; set to false for no template
+    }
+  }
+}
 ```
-
-## Theme Template Variables
-You can access the theme and page objects via the `$theme` and `$page` variables within a template or page. Each one is a stdObject with the following properties each:
-- `$theme`
-  - `dir (string)`: relative path to the theme directory
-  - `template (string)`: relative path to the theme's `template.php` file
-  - `assets (string)`: absolute path to the theme's `assets` directory to `<link>` resources, i.e. css/js
-- `$page`
-  - `page (string)`: name of the page file to load
-  - `meta_title (string)`: title of the page
-  - `meta_<name>`: You can specify any kind of SEO properties to use in your template
-
-## admin.php
-There is one other file: `admin.php`. This is an alternative to managing the site's file directly, so it's pretty rudimentary.
-
-When first logging in, enter the password you want to use and it will be set in the `config.php` file.
-
-This web interface will provide a simple file manager to:
-- Edit themes and pages files
-- Edit `routes.php` and `config.php`
-- Add/remove pages and themes files
-- Add/remove file and directories under `media`
-- Upload text, image, and document files under `media`

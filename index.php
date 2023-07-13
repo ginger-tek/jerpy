@@ -12,7 +12,7 @@ if(property_exists($req,'query')) parse_str($req->query, $req->query);
 $r = $config->routes->{$req->path} ?? $config->routes->{'/404'} ?? throw new Exception('Missing 404 route');
 ob_start();
 if(property_exists($r,'page')) file_exists($r->page) ? include $r->page : throw new Exception('Missing page file');
-else echo $r->content ?? throw new Exception('Missing page content');
+else echo $r->body ?? throw new Exception('Missing page body');
 $page = (object)['meta'=>$r,'body'=>ob_get_clean()];
 if(property_exists($r,'layout') && !($l = $r->layout)) { echo $page->body; exit; }
 else $l = $config->layout ?? throw new Exception('No global layout defined');

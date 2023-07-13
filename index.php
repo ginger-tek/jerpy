@@ -7,8 +7,8 @@ if(!file_exists('config.json')) throw new Exception('Missing config file');
 $config = json_decode(file_get_contents('config.json'),false, 10, JSON_THROW_ON_ERROR);
 if($config->maintenance) { http_response_code(503); exit; }
 date_default_timezone_set($config->timezone ?? 'America/New_York');
-$req = (object)parse_url($_SERVER['REQUEST_URI'] ?? '/');
-if(property_exists($req,'query')) parse_str($req->query, $req->query);
+$req = (object)parse_url(rtrim($_SERVER['REQUEST_URI'],'/') ?: '/');
+if(property_exists($req,'query')) parse_str($req->query, $req->query); else $req->query = [];
 $r = $config->routes->{$req->path} ?? $config->routes->{'/404'} ?? throw new Exception('Missing 404 route');
 ob_start();
 if(property_exists($r,'page')) file_exists($r->page) ? include $r->page : throw new Exception('Missing page file');

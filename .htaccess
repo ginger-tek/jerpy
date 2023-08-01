@@ -13,7 +13,6 @@
 
     ## Paths explicitly blocked from being handled by the server, except for admin and robots
     RewriteRule ^config.php index.php [L,NC]
-    RewriteRule ^admin.php admin.php [L,NC]
     RewriteRule ^robots.txt robots.txt [L,NC]
     RewriteRule ^logs/.* index.php [L,NC]
 
@@ -21,7 +20,7 @@
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteCond %{REQUEST_FILENAME} !/.well-known/*
     RewriteCond %{REQUEST_FILENAME} !/media/.*
-    RewriteCond %{REQUEST_FILENAME} !/themes/.*/(assets|partials)/.*
+    RewriteCond %{REQUEST_FILENAME} !/layouts/.*/(assets|partials)/.*
     RewriteRule !^index.php index.php [L,NC]
 
     ## Block all PHP files, except index

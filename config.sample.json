@@ -5,7 +5,7 @@
   "routes": {
     "/": {
       "title": "Home",
-      "page": "pages/home.php"
+      "file": "pages/home.php"
     },
     "/test": {
       "title": "Test",
@@ -14,7 +14,7 @@
     },
     "/404": {
       "title": "Page Not Found",
-      "page": "pages/404.php"
+      "file": "pages/404.php"
     }
   }
 }

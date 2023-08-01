@@ -19,8 +19,9 @@
     ## Paths explicitly handled by the server
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteCond %{REQUEST_FILENAME} !/.well-known/*
+    RewriteCond %{REQUEST_FILENAME} !/assets/.*
     RewriteCond %{REQUEST_FILENAME} !/media/.*
-    RewriteCond %{REQUEST_FILENAME} !/layouts/.*/(assets|partials)/.*
+    RewriteCond %{REQUEST_FILENAME} !/layouts/.*/(partials)/.*
     RewriteRule !^index.php index.php [L,NC]
 
     ## Block all PHP files, except index

@@ -8,12 +8,12 @@ The CMS was built to be as streamlined and stripped-down as possible, so it's me
 
 # Getting Started
 1. Grab the latest release and upload the files to your web root
-2. Create a `layouts` and `pages` directory for your site content, and rename `config.sample.json` to `config.json`
-3. Add your first layout directory inside `layouts`
+2. Create `layouts`, `pages`, and `assets` directories, and rename `config.sample.json` to `config.json`
+3. Add your first layout file inside `layouts`
 4. Start adding routes to the `config.json`
 
 # File Structure
-There are 2 directories for content, `pages` and `layouts`, and just one file for configuration, `config.json`.
+There are 3 directories for content, `pages`, `layouts`, `assets`, and just one file for configuration, `config.json`.
 
 ## Pages
 The `pages` directory stores all the content for the site, and can be referenced as a file path on the `page` property to render the page for a route.
@@ -25,14 +25,16 @@ The `pages` directory stores all the content for the site, and can be referenced
 ```
 
 ## Layouts
-The `layouts` directory stores layout templates and their assets. The default global theme is set in `config.json` on the `layout` property.
-
-Each layout directory must have a `index.php` file and an `assets` directory. You can organize your CSS, JavaScript, fonts, and images within the `assets` directory as you see fit.
+The `layouts` directory stores layout templates, each their own `.php`. The default global theme is set in `config.json` on the `layout` property.
 ```
 🗀 layouts
-  🗀 layoutName
-    🗀 assets
-    🗋 index.php
+  🗋 layoutName.php
+```
+
+## Assets
+This is the global assets directory, in which you can organize your CSS, JavaScript, fonts, and images to use in your layouts and pages via absolute URI:
+```html
+<link href="/assets/css/styles.css" rel="stylesheet">
 ```
 
 # Routes
@@ -70,7 +72,6 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 |`$config`|`object`|The stdClass object of `config.json`|
 |`$req`|`object`|The current request, contains properties `path` (string of URI) and `query` (associative array of URL query parameters)|
 |`$page`|`object`|Contains the body content, as well as a `meta` property that inherits all the properties defined by the route object|
-|`$assets`|`string`|Absolute path to the current layout's assets directory|
 
 # Config.json
 ```json

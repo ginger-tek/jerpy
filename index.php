@@ -1,7 +1,7 @@
 <?php
 
 function eh($e,$s=0,$f=0,$l=0) { ob_clean(); echo '<pre><h1>An error occurred</h1><h2>❌'
-  .($e instanceof \Exception ? $e->getMessage() : "$f:$l - $s").'</h2></pre>'; exit; }
+  .(method_exists($e,'getMessage') ? $e->getMessage()."\n".$e->getTraceAsString() : "$f:$l - $s").'</h2></pre>'; exit; }
 error_reporting(E_ERROR | E_STRICT);
 set_error_handler('eh'); set_exception_handler('eh');
 if(!file_exists('config.json')) throw new \Exception('Missing config file');

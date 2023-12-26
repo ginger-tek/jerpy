@@ -105,7 +105,7 @@ Example plugin structure:
       🗋 someSupportingFile.php
 ```
 
-Plugins are loaded globally are their top-level objects, functions, and/or classes are accessible in templates and pages.
+Plugins are loaded globally and their top-level objects, functions, and/or classes are made accessible in templates and pages.
 
 To add a plugin, make a new directory in the root called `plugins` and add the plugin folder to it.
 

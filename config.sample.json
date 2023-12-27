@@ -7,14 +7,13 @@
       "title": "Home",
       "file": "pages/home.php"
     },
-    "/test": {
-      "title": "Test",
-      "body": "test",
-      "layout": false
+    "/products/:id": {
+      "title": "Product",
+      "file": "pages/product.php"
     },
-    "/404": {
-      "title": "Page Not Found",
-      "file": "pages/404.php"
+    "404": {
+      "title": "Page not found",
+      "body": "Page not found"
     }
   }
 }

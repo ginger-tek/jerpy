@@ -1,38 +1,55 @@
 # jerpy
 
 ## The smallest, flat-file CMS around!
-Jerpy is a simple, flat-file, PHP CMS built for control and simplicity that is easy to install, customize, and maintain.
-**The whole templating engine is under 20-lines of code, and the data structure is only 3 directories and 2 files.**
+Jerpy is a flat-file PHP CMS built for control and simplicity that is easy to install, customize, and maintain.
+**The whole templating engine is under 1700 characters of PHP code, and the data structure is only 4 directories and 2 files.**
 
-The CMS was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files.
+This was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files and there's no admin web panel.
 
 # Getting Started
-1. Grab the latest release and upload the files to your web root
-2. Create `layouts`, `pages`, and `assets` directories, and rename `config.sample.json` to `config.json`
-3. Add your first layout file inside `layouts`
-4. Start adding routes to the `config.json`
+1. Grab the latest release, extract, and upload the files to your web root
+2. Copy/rename `config.sample.json` to `config.json`
+4. Start editing/adding!
 
 # File Structure
-There are 3 directories for content, `pages`, `layouts`, and `assets`, and just one file for configuration, `config.json`.
+There are 3 directories for content, one directory for plugins, and one file for configuration. The `pages`, `layouts`, and `assets` directories will hold page contents, layout templates, and site assets, respectively.
 
 ## Pages
-The `pages` directory stores all the content for the site, and can be referenced as a file path on the `page` property to render the page for a route.
+The `pages` directory stores the page contents for the site, and can be referenced as a file path on the `file` property of a route.
 ```
 🗀 pages
   🗋 home.php
-  🗋 about.php
-  🗋 404.php
+```
+```json
+{
+  "routes": {
+    "/": {
+      "title": "Home",
+      "file": "pages/home.php"
+    }
+  }
+}
 ```
 
 ## Layouts
-The `layouts` directory stores layout templates, each their own `.php`. The default global theme is set in `config.json` on the `layout` property.
+The `layouts` directory stores layout templates, each their own `.php` file. The default global theme is set in `config.json` on the `layout` property.
 ```
 🗀 layouts
-  🗋 layoutName.php
+  🗋 default.php
+```
+```json
+{
+  "layout": "default"
+}
 ```
 
 ## Assets
 This is the global assets directory, in which you can organize your CSS, JavaScript, fonts, and images to use in your layouts and pages via absolute URI:
+```
+🗀 assets
+  🗀 css
+    🗋 styles.css
+```
 ```html
 <link href="/assets/css/styles.css" rel="stylesheet">
 ```
@@ -60,17 +77,24 @@ Each route is defined as a key on the `routes` property in `config.json` whose v
 |`title`|`string`|Yes|Page title|
 |`file`|`string`|Conditional|Required if `body` not set. Overwrites `body` value with rendered content|
 |`body`|`string`|Conditional|Required if `file` not set. Throws error if neither `file` and `body` set|
-|`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used|
+|`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used and page body is echoed as is|
 
 # Templating
-Jerpy relies on the built-in templating functionality of PHP, so use `include` and `require` as you would normally, parsing content as needed, i.e. using [Parsedown](https://github.com/erusev/parsedown) or other utilities.
+Page files are included, rendered on the buffer, and their output is assigned to `$page->body`. To include the page content in a template, simply echo the value of `$page-body`:
+```php
+<body>
+  <?= $page->body ?>
+</body>
+```
+
+Aside from page content, Jerpy relies on the built-in templating functionality of PHP, so use `include` and `require` as you would normally for everything else, parsing content as needed (see [plugins](#plugins) below).
 
 ## Global Variables
 There are 4 global variables you can use in a layout or page file: `$config`, `$req`, `$page`, and `$assets`.
 |Name|Data Type|Note|
 |---|---|---|
 |`$config`|`object`|The stdClass object of `config.json`|
-|`$req`|`object`|The current request, contains properties `path` (string of URI) and `query` (associative array of URL query parameters)|
+|`$req`|`object`|The current request, contains properties `path` (string of URI), `query` (associative array of URL query parameters), and `params` (asociative array of dynamic URI parameters)|
 |`$page`|`object`|Contains the body content, as well as a `meta` property that inherits all the properties defined by the route object|
 
 # Config.json
@@ -93,8 +117,8 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 Plugins can be made for Jerpy, but they do not follow any specific framework or design pattern. This is left up to the developer to ensure that the plugin works and tests succesfully with all the existing features of Jerpy.
 
 The only requirements for plugins are the following:
-- The entrypoint to be loaded globally at runtime must be a `.php` file with the same name as the plugin's folder
-- Any supporting files must be plainly included/required from within the plugin folder; <span style="color:orangered"><strong>DO NOT use autoloading in your plugin as Jerpy does not use autoloading/bootstrapping</strong></span>
+- The entrypoint to be included globally at runtime must be a `.php` file with the same name as the plugin's folder
+- Any supporting files must be plainly included/required from within the plugin folder; <span style="color:orangered"><strong>DO NOT use autoloading in your plugin as Jerpy does not use any autoloading/bootstrapping</strong></span>
 
 Example plugin structure:
 ```
@@ -107,7 +131,7 @@ Example plugin structure:
 
 Plugins are loaded globally and their top-level objects, functions, and/or classes are made accessible in templates and pages.
 
-To add a plugin, make a new directory in the root called `plugins` and add the plugin folder to it.
+To add a plugin, simply copy/upload the plugin's folder to the `plugins` directory.
 
 Below is an example plugin for using Parsedown via a wrapper method:
 
@@ -126,5 +150,5 @@ function md($p)
 
 `pages/some-page.php`
 ```php
-<?= md('path/to/markdown.file') ?>
+<?= md('path/to/markdown-file.md') ?>
 ```

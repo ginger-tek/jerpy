@@ -58,16 +58,15 @@ This is the global assets directory, in which you can organize your CSS, JavaScr
 Routes are defined separately from pages to easily manage the content and access of each route.
 
 ## Route Properties
-Each route is defined as a key on the `routes` property in `config.json` whose value is an object with properties that define the route's metadata and page content.
+Each route is defined as a key on the `routes` property in `config.json` whose value is an object with properties that define the route's page title and content. Additional properties can be set for metadata/SEO purposes, but the title and file/body properties are the only necessary properties:
 ```json
 {
   "routes": {
     "/": {
       "title": "Page Title",
-      "description": "This is a description of the page for SEO",
-      "metaImage": "https://domain.com/path/to/image/for/seo.jpg",
       "file": "pages/page.php",
-      "body": "Some text"
+      "description": "This is a description of the page for SEO",
+      "thumbnail": "https://domain.com/path/to/image/for/seo.jpg"
     }
   }
 }
@@ -78,6 +77,21 @@ Each route is defined as a key on the `routes` property in `config.json` whose v
 |`file`|`string`|Conditional|Required if `body` not set. Overwrites `body` value with rendered content|
 |`body`|`string`|Conditional|Required if `file` not set. Throws error if neither `file` and `body` set|
 |`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used and page body is echoed as is|
+
+## Dynamic Routes
+You can also specify non-static matching routes for the key string. Use the `:param` syntax to dynamically match a route and have its parameters set to the parsed values from the incoming URI:
+```json
+{
+  "routes": {
+    "/products/:id": {
+      "file": "pages/product.php"
+    }
+  }
+}
+```
+```php
+<p>ID: <?= $req->params['id'] ?></p>
+```
 
 # Templating
 Page files are included, rendered on the buffer, and their output is assigned to `$page->body`. To include the page content in a template, simply echo the value of `$page-body`:
@@ -95,7 +109,7 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 |---|---|---|
 |`$config`|`object`|The stdClass object of `config.json`|
 |`$req`|`object`|The current request, contains properties `path` (string of URI), `query` (associative array of URL query parameters), and `params` (asociative array of dynamic URI parameters)|
-|`$page`|`object`|Contains the body content, as well as a `meta` property that inherits all the properties defined by the route object|
+|`$page`|`object`|Contains the `body` content property, as well as all the properties defined by the route object|
 
 # Config.json
 ```json

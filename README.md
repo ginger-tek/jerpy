@@ -7,9 +7,11 @@ Jerpy is a flat-file PHP CMS built for control and simplicity that is easy to in
 This was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files and there's no admin web panel.
 
 # Getting Started
-1. Grab the latest release, extract, and upload the files to your web root
-2. Copy/rename `config.sample.json` to `config.json`
-4. Start editing/adding!
+## Composer
+Jerpy is super easy to get setup. Simply run the following to download and extract, then copy or rename `config.sample.json` to `config.json`.
+```
+composer create-project ginger-tek/jerpy <directory>
+```
 
 # File Structure
 There are 3 directories for content, one directory for plugins, and one file for configuration. The `pages`, `layouts`, and `assets` directories will hold page contents, layout templates, and site assets, respectively.

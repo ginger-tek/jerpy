@@ -16,6 +16,7 @@ if (!file_exists('config.json')) throw new \JerpyException('Missing config file'
 $config = json_decode(file_get_contents('config.json'), false, 10, JSON_THROW_ON_ERROR);
 if ($config->maintenance) st(503);
 $req = (object)parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/'); $req->query = $_REQUEST ?? []; $req->params = [];
+$req->method = $_SERVER['REQUEST_METHOD'];
 $page = $config->routes->{$req->path} ?? $config->routes->{@array_values(array_filter(array_keys(get_object_vars($config->routes)), function($r) use($req) { if (preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w\-]+)', $r) . '$#', $req->path, $params)) { $req->params = $params; return true; } return false; }))[0]} ?? $config->routes->{'404'} ?? st(404);
 if (file_exists('plugins')) { foreach (glob('plugins/*', GLOB_ONLYDIR) as $p) include "$p/" . basename($p) . '.php'; }
 if (property_exists($page, 'file') && file_exists($page->file)) { ob_start(); include $page->file; $page->body = ob_get_clean(); }

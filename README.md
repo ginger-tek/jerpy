@@ -110,7 +110,7 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 |Name|Data Type|Note|
 |---|---|---|
 |`$config`|`object`|The stdClass object of `config.json`|
-|`$req`|`object`|The current request, contains properties `path` (string of URI), `query` (associative array of URL query parameters), and `params` (asociative array of dynamic URI parameters)|
+|`$req`|`object`|The current request, contains properties `path` (string of URI), `method` (string of HTTP method), `query` (associative array of URL query parameters), and `params` (asociative array of dynamic URI parameters)|
 |`$page`|`object`|Contains the `body` content property, as well as all the properties defined by the route object|
 
 # Config.json

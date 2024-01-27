@@ -2,7 +2,7 @@
 
 /**
  * @author      GingerTek
- * @copyright   Copyright (c), 2023 GingerTek
+ * @copyright   Copyright (c), GingerTek
  * @license     MIT public license
  */
 

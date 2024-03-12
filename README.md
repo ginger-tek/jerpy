@@ -132,9 +132,7 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 # Plugins
 Plugins can be made for Jerpy, but they do not follow any specific framework or design pattern. This is left up to the developer to ensure that the plugin works and tests succesfully with all the existing features of Jerpy.
 
-The only requirements for plugins are the following:
-- The entrypoint to be included globally at runtime must be a `.php` file with the same name as the plugin's folder
-- Any supporting files must be plainly included/required from within the plugin folder; <span style="color:orangered"><strong>DO NOT use autoloading in your plugin as Jerpy does not use any autoloading/bootstrapping</strong></span>
+The only requirements for plugins are the entrypoint to be included globally at runtime must be a `.php` file with the same name as the plugin's folder
 
 Example plugin structure:
 ```

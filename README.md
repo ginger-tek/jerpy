@@ -122,7 +122,7 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 |Name|Data Type|Note|
 |---|---|---|
 |`$config`|`object`|The stdClass object of `config.json`|
-|`$req`|`object`|The current request, contains properties `path` (string of URI), `method` (string of HTTP method), `query` (associative array of URL query parameters), and `params` (asociative array of dynamic URI parameters)|
+|`$req`|`object`|The current request, contains properties `path` (string of URI), `method` (string of HTTP method), `query` (object of URL query parameters), and `params` (object of dynamic URI parameters)|
 |`$page`|`object`|Contains the `body` content property, as well as all the properties defined by the route object|
 
 # Config.json
@@ -144,13 +144,11 @@ There are 4 global variables you can use in a layout or page file: `$config`, `$
 # Plugins
 Plugins can be made for Jerpy, but they do not follow any specific framework or design pattern. This is left up to the developer to ensure that the plugin works and tests succesfully with all the existing features of Jerpy.
 
-The only requirements for plugins are the entrypoint to be included globally at runtime must be a `.php` file with the same name as the plugin's folder
-
-Example plugin structure:
+The only requirements for plugins are that the entrypoint that is included globally at runtime must be a `.php` file with the same name as the plugin's folder:
 ```
 🗀 plugins
-  🗀 myPlugin
-    🗋 myPlugin.php
+  🗀 myPlugin <-- plugin dir
+    🗋 myPlugin.php <-- entrypoint (same as plugin dir)
     🗀 vendor
       🗋 someSupportingFile.php
 ```

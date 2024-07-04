@@ -1,1 +1,1 @@
-<p>ID: <?= $req->params['id'] ?></p>
+<p>ID: <?= $req->params->id ?></p>

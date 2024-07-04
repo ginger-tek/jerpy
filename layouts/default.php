@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title><?= $config->siteName ?> - <?= $page->title ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="og:title" content="<?= $page->title ?>">
+  <meta name="og:description" content="<?= @$page->description ?>">
+  <meta name="og:image" content="<?= @$page->thumbnail ?>">
 </head>
 
 <body>

@@ -60,7 +60,16 @@ This is the global assets directory, in which you can organize your CSS, JavaScr
 Routes are defined separately from pages to easily manage the content and access of each route.
 
 ## Route Properties
-Each route is defined as a key on the `routes` property in `config.json` whose value is an object with properties that define the route's page title and content. Additional properties can be set for metadata/SEO purposes, but the title and file/body properties are the only necessary properties:
+Each route is defined as a key on the `routes` property in `config.json` whose value is an object with properties that define the route's page title and content.
+
+|Name|Data Type|Required?|Note|
+|---|---|---|---|
+|`title`|`string`|Yes|Page title|
+|`file`|`string`|Conditional|Required if `body` not set. Overwrites `body` value with rendered content|
+|`body`|`string`|Conditional|Required if `file` not set. Throws error if neither `file` and `body` set|
+|`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used and page body is echoed as is|
+
+Additional arbitrary properties can be set for metadata/SEO purposes, but the title and file/body properties are the only necessary properties:
 ```json
 {
   "routes": {
@@ -68,17 +77,20 @@ Each route is defined as a key on the `routes` property in `config.json` whose v
       "title": "Page Title",
       "file": "pages/page.php",
       "description": "This is a description of the page for SEO",
-      "thumbnail": "https://domain.com/path/to/image/for/seo.jpg"
+      "thumbnail": "/assets/img/seo.jpg"
     }
   }
 }
 ```
-|Name|Data Type|Required?|Note|
-|---|---|---|---|
-|`title`|`string`|Yes|Page title|
-|`file`|`string`|Conditional|Required if `body` not set. Overwrites `body` value with rendered content|
-|`body`|`string`|Conditional|Required if `file` not set. Throws error if neither `file` and `body` set|
-|`layout`|`string`|No|If set to valid path, will override default `layout`. If set to false, no layout is used and page body is echoed as is|
+You can then implement your additional properties in your layout, such as for social media SEO tags. Use the `@` warning suppressing syntax for when some routes don't have the property specified:
+```html
+<head>
+  <title><?= $config->siteName ?> - <?= $page->title ?></title>
+  <meta name="og:title" content="<?= $page->title ?>">
+  <meta name="og:description" content="<?= @$page->description ?>">
+  <meta name="og:image" content="<?= @$page->thumbnail ?>">
+</head>
+```
 
 ## Dynamic Routes
 You can also specify non-static matching routes for the key string. Use the `:param` syntax to dynamically match a route and have its parameters set to the parsed values from the incoming URI:

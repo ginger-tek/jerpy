@@ -2,7 +2,7 @@
 
 $timezone = 'America/New_York';
 
-$layout = 'layouts/default.php';
+$layout = 'default';
 
 $plugins = [];
 

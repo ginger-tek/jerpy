@@ -135,10 +135,9 @@ Below is an example plugin for using Parsedown via a wrapper method:
 
 require 'vendor/Parsedown.php';
 
-function md($p)
+function md(string $path): string
 {
-  $pd = new \Parsedown();
-  return $pd->text(file_get_contents($p));
+  return (new Parsedown)->text(file_get_contents($path));
 }
 ```
 

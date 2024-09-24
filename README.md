@@ -125,7 +125,7 @@ Plugins are loaded globally, and their top-level objects, functions, and/or clas
 
 To add a plugin, simply copy/upload the plugin's folder to the `plugins` directory.
 
-To enable a plugin, add it's folder name to the `$plugins` array in `config.php`:
+To enable a plugin, add it's folder name to the `$plugins` array in `config.php`.
 
 Below is an example plugin for using Parsedown via a wrapper method:
 

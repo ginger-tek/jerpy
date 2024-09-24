@@ -6,7 +6,12 @@
  * @license     MIT public license
  */
 
-$req = (object) ['uri' => parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH), 'method' => $_SERVER['REQUEST_METHOD'], 'params' => []];
+$req = (object) [
+  'uri' => parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH),
+  'method' => $_SERVER['REQUEST_METHOD'],
+  'query' => (object) $_GET,
+  'params' => []
+];
 if (is_file($req->uri))
   return false;
 set_exception_handler(function ($e) {
@@ -17,7 +22,7 @@ require 'config.php';
 if (isset($timezone))
   date_default_timezone_set($timezone);
 foreach ($plugins as $p)
-  @include "plugins/$p/index.php";
+  @include "plugins/$p/$p.php";
 $page = $routes[$req->uri] ?? array_values(array_filter($routes, function ($k) use ($req) {
   if (preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w@%&+=_-]+)', $k) . '$#', $req->uri, $params))
     return $req->params = (object) $params;
@@ -28,5 +33,5 @@ if ($page === null)
   return http_response_code(404);
 if (is_array($page))
   extract($page);
-include $layout === false ? $page : $layout;
+include $layout === false ? $page : "layouts/$layout.php";
 ob_end_flush();

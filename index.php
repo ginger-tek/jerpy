@@ -6,22 +6,32 @@
  * @license     MIT public license
  */
 
-class JerpyException extends Exception {}
-class PluginException extends Exception {}
-function eh($e) { ob_clean(); echo '<pre><h1>An error has occrurred</h1><h2>❌' . get_class($e) . "\n" . $e->getMessage() . "\n" . $e->getTraceAsString() . '</h2></pre>'; exit; }
-function sc(int $c) { http_response_code($c); exit; }
-set_exception_handler('eh');
-date_default_timezone_set($config->timezone ?? 'America/New_York');
-if (preg_match('#\.(?:css|js|jpeg|jpg|png|gif|webp)$#', $_SERVER['REQUEST_URI'])) return false;
-if (!file_exists('config.json')) throw new \JerpyException('Missing config file');
-$config = json_decode(file_get_contents('config.json'), false, 10, JSON_THROW_ON_ERROR);
-if ($config->maintenance) sc(503);
-$req = (object)parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/');
-$req->method = $_SERVER['REQUEST_METHOD'];
-$req->query = (object)($_REQUEST ?? []); $req->params = (object)[];
-$page = $config->routes->{$req->path} ?? $config->routes->{@array_values(array_filter(array_keys(get_object_vars($config->routes)), function($r) use($req) { if (preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w\-\+\%]+)', $r) . '$#', $req->path, $params)) { $req->params = (object)$params; return true; } return false; }))[0]} ?? $config->routes->{'404'} ?? sc(404);
-if (file_exists('plugins')) { foreach (glob('plugins/*', GLOB_ONLYDIR) as $p) include "$p/" . basename($p) . '.php'; }
-if (property_exists($page, 'file') && file_exists($page->file)) { ob_start(); include $page->file; $page->body = ob_get_clean(); }
-else if (!property_exists($page, 'body')) throw new \JerpyException('Route missing file and body property');
-if (property_exists($page, 'layout') && !($l = $page->layout)) { echo $page->body; exit; } else $l = $config->layout ?? throw new \JerpyException('No global layout defined');
-if (@$l) include "layouts/$l.php";
+$req = (object) [
+  'uri' => parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH),
+  'method' => $_SERVER['REQUEST_METHOD'],
+  'query' => (object) $_GET,
+  'params' => []
+];
+if (is_file($req->uri))
+  return false;
+set_exception_handler(function ($e) {
+  ob_clean();
+  exit('<style>@media(prefers-color-scheme:dark){body{background:#333;color:white;}}</style><pre><h1>❌Unhandled Exception</h1><h2>' . get_class($e) . ": " . $e->getMessage() . "\n" . $e->getTraceAsString() . '</h2></pre>');
+});
+require 'config.php';
+if (isset($timezone))
+  date_default_timezone_set($timezone);
+foreach ($plugins as $p)
+  @include "plugins/$p/$p.php";
+$page = $routes[$req->uri] ?? array_values(array_filter($routes, function ($k) use ($req) {
+  if (preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w@%&+=_-]+)', $k) . '$#', $req->uri, $params))
+    return $req->params = (object) $params;
+  return false;
+}, ARRAY_FILTER_USE_KEY))[0] ?? $routes['404'] ?? null;
+ob_start();
+if ($page === null)
+  return http_response_code(404);
+if (is_array($page))
+  extract($page);
+include $layout === false ? $page : "layouts/$layout.php";
+ob_end_flush();

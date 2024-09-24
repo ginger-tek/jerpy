@@ -1,2 +1,7 @@
-config.json
 .vscode
+vendor
+
+assets/
+content/
+plugins/
+config.php

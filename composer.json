@@ -2,17 +2,30 @@
     "name": "ginger-tek/jerpy",
     "type": "project",
     "description": "Small, flat-file PHP CMS",
-    "keywords": ["cms","website"],
+    "version": "4.0.0",
     "homepage": "https://github.com/ginger-tek/jerpy",
-    "license": "MIT",
+    "license": "ISC",
     "authors": [
         {
             "name": "GingerTek",
             "homepage": "https://github.com/ginger-tek"
         }
     ],
+    "scripts": {
+        "post-create-project-cmd": [
+            "php -r \"array_map('mkdir', ['assets', 'content', 'plugins']);\"",
+            "php -r \"copy('example.config.php', 'config.php');\""
+        ]
+    },
+    "keywords": [
+        "php",
+        "cms",
+        "flat-file",
+        "website",
+        "webapp"
+    ],
     "require": {
-        "php": ">=8.1.0"
+        "php": ">=8.2.0"
     },
     "support": {
         "issues": "https://github.com/ginger-tek/jerpy/issues",

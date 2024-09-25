@@ -1,10 +1,10 @@
 <div align=center>
   <h1>jerpy</h1>
-  <i>"The little CMS that could!"</i>
+  <p>Small | Zero Dependencies | Flat-file</p>
 </div>
 <hr>
 
-Jerpy is one of the smallest, flat-file PHP content management systems (CMS) built for control and simplicity that is easy to installs, customize, and maintain.
+Jerpy a small, zero-dependency, flat-file content management system (CMS) built for control and simplicity that is easy to installs, customize, and maintain.
 
 **This was built to be as streamlined and stripped-down as possible, so it's meant to be administered directly via the files and there's no admin web panel.**
 

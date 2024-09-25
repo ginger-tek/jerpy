@@ -21,8 +21,9 @@
     RewriteCond %{REQUEST_FILENAME} !/.well-known/*
     RewriteCond %{REQUEST_FILENAME} !/content/.*
     RewriteCond %{REQUEST_FILENAME} !/assets/.*
-    RewriteCond %{REQUEST_FILENAME} !/media/.*
-    RewriteCond %{REQUEST_FILENAME} !/layouts/.*/(partials)/.*
+    RewriteCond %{REQUEST_FILENAME} !/pages/.*
+    RewriteCond %{REQUEST_FILENAME} !/plugins/.*
+    RewriteCond %{REQUEST_FILENAME} !/layouts/.*
     RewriteRule !^index.php index.php [L,NC]
 
     ## Block all PHP files, except index

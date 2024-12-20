@@ -13,7 +13,7 @@
     ],
     "scripts": {
         "post-create-project-cmd": [
-            "php -r \"array_map('mkdir', ['assets', 'content', 'plugins']);\"",
+            "php -r \"array_map('mkdir', ['assets', 'content', 'media', 'plugins', 'logs']);\"",
             "php -r \"copy('example.config.php', 'config.php');\""
         ]
     },

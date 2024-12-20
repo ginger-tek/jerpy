@@ -3,12 +3,12 @@
 
 <head>
   <meta charset="UTF-8">
-  <title><?= $title ?? 'My Site' ?></title>
-  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@2.0.6/css/pico.min.css">
+  <title>My Site - <?= @$meta['title'] ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="og:title" content="<?= $title ?? '' ?>">
-  <meta name="og:description" content="<?= $description ?? '' ?>">
-  <meta name="og:image" content="<?= $thumbnail ?? '' ?>">
+  <meta name="og:title" content="<?= @$meta['title'] ?>">
+  <meta name="og:description" content="<?= @$meta['description'] ?>">
+  <meta name="og:image" content="<?= @$meta['thumbnail'] ?>">
+  <link rel="stylesheet" href="/assets/styles.css">
 </head>
 
 <body class="container">

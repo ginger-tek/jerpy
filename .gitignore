@@ -1,7 +1,10 @@
 .vscode
 vendor
 
-assets/
-content/
-plugins/
+assets
+content
+media
+plugins
+logs
+
 config.php

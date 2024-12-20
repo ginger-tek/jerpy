@@ -7,10 +7,13 @@ $layout = 'default';
 $plugins = [];
 
 $routes = [
-  '/' => 'pages/home.php',
-  '/about' => [
-    'page' => 'pages/about.php',
-    'title' => 'About'
+  '/' => [
+    'page' => 'home.php',
+    'meta' => ['title' => 'Home']
   ],
-  '404' => 'pages/notFound.php'
+  '/about' => [
+    'page' => 'about.php',
+    'meta' => ['title' => 'About']
+  ],
+  '404' => 'notFound.php'
 ];

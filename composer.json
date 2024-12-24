@@ -1,7 +1,7 @@
 {
     "name": "ginger-tek/jerpy",
     "type": "project",
-    "description": "Small, flat-file PHP CMS",
+    "description": "Small, flat-file PHP website",
     "homepage": "https://github.com/ginger-tek/jerpy",
     "license": "ISC",
     "authors": [
@@ -12,7 +12,7 @@
     ],
     "scripts": {
         "post-create-project-cmd": [
-            "php -r \"array_map('mkdir', ['assets', 'content', 'media', 'plugins', 'logs']);\"",
+            "php -r \"array_map('mkdir', ['assets', 'content', 'media', 'plugins']);\"",
             "php -r \"copy('example.config.php', 'config.php');\""
         ]
     },
@@ -20,8 +20,7 @@
         "php",
         "cms",
         "flat-file",
-        "website",
-        "webapp"
+        "website"
     ],
     "require": {
         "php": ">=8.2.0"

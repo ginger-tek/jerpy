@@ -6,8 +6,12 @@
  * @license     MIT public license
  */
 
-set_exception_handler(fn() => exit('<style>body{font-family:monospace;color:#fff;font-size:2em;background:#444;padding:5em;text-align:center}</style>
- <p>⚠<br>Something went wrong while showing this page<br>Contact the site admin for assistance</p>'));
+set_exception_handler(function (Throwable $ex) {
+  ob_clean();
+  error_log("[" . date('r') . "] {$ex->getMessage()}: {$ex->getTraceAsString()}");
+  exit('<style>body{font-family:monospace;color:#fff;font-size:2em;background:#444;padding:5em;text-align:center}</style>
+  <p>⚠<br>Something went wrong while showing this page<br>Contact the site admin for assistance</p>');
+});
 require 'config.php';
 date_default_timezone_set($timezone ?? 'America/New_York');
 $uri = parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH);

@@ -15,5 +15,8 @@ $routes = [
     'page' => 'about.php',
     'meta' => ['title' => 'About']
   ],
-  '404' => 'notFound.php'
+  '404' => [
+    'page' => 'notFound.php',
+    'meta' => ['title' => 'Page Not Found']
+  ]
 ];

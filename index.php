@@ -17,7 +17,7 @@ date_default_timezone_set($timezone ?? 'America/New_York');
 $uri = parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH);
 $params = [];
 foreach ($plugins as $r => $p)
-  if ((is_string($r) && !empty($r) && $p && $r === $uri) || (!is_string($r) && $p))
+  if ((is_string($r) && str_starts_with($r, $uri) && $p) || (!is_string($r) && $p))
     @include "plugins/$p/$p.php";
 if (
   !($res = $routes[$uri] ?? current(array_filter($routes, function ($k) use (&$params, $uri) {

@@ -1,9 +1,7 @@
-.vscode
 vendor
 
 assets
 content
-media
 plugins
 
 config.php

@@ -1,0 +1,10 @@
+# php-cgi -d xdebug.mode=debug -d xdebug.client_host=127.0.0.1 -d xdebug.client_port=9003 -d xdebug.start_with_request=yes -b 9001
+
+http://localhost:8080 {
+	encode gzip
+	file_server /plugins/*/assets/*
+	file_server /assets/*
+	php_fastcgi 127.0.0.1:9001 {
+		try_files /index.php
+	}
+}

@@ -1,12 +1,12 @@
 <div align=center>
-  <h1>jerpy</h1>
-  <p>Small | Zero Dependencies | Flat-file</p>
+  <div style="font-size:2em;font-weight:bold">jerpy</div>
+  <p>Simple - Extendable - Flat-file</p>
 </div>
 <hr>
 
-Jerpy a small, zero-dependency, flat-file simple website system built for control and simplicity that is easy to install, customize, and maintain.
+Jerpy a simple, extendable, flat-file simple website system built for control and ease-of-use that is easy to install, customize, and maintain.
 
-Jerpy doesn't have a management interface or web portal (there *could* be a [plugin](#plugins) for that...). Everything is managed directly via the files themselves.
+**NOTE: Jerpy isn't a traditional CMS and doesn't have a management interface or web portal (but there *could* be a [plugin](#plugins) for that...). Everything is managed directly via the files themselves.**
 
 # Getting Started
 ## Composer
@@ -20,9 +20,7 @@ composer create-project ginger-tek/jerpy <directory>
 - ## `layouts`
   Stores layout templates, each their own `.php` file. The default global theme is set in `config.php` via the `$layout` property. The value is just the file name with no extension.
 - ## `assets`
-  Organize your CSS, JavaScript, fonts, and images to use in your layouts and pages via absolute URI here:
-- ## `media`
-  For any and all URL-accessible files, such as documents, video/music, etc.
+  Organize your CSS, JavaScript, fonts, and images to use in your layouts and pages via absolute URI here
 - ## `content`
   For all your embedded content files, such as Markdown text files, and is not URL-accessible.
 
@@ -54,13 +52,13 @@ $routes = [
 ]
 ```
 
-When implementing metadata, use the `@` warning suppression syntax to avoid warnings when a route does't have that metadata property specified:
+When implementing metadata, use null coalescing syntax to avoid warnings when a route does't have that metadata property specified:
 ```html
 <head>
   ...
-  <meta name="og:title" content="<?= @$meta['title'] ?>">
-  <meta name="og:description" content="<?= @$meta['description'] ?>">
-  <meta name="og:image" content="<?= @$meta['thumbnail'] ?>">
+  <meta name="og:title" content="<?= $meta['title'] ?? '' ?>">
+  <meta name="og:description" content="<?= $meta['description'] ?? '' ?>">
+  <meta name="og:image" content="<?= $meta['thumbnail'] ?? '' ?>">
   ...
 </head>
 ```
@@ -103,8 +101,23 @@ Plugins can be created to extend or add functionality to Jerpy. They do not requ
       🗀 someSupportingPackage
 ```
 
-Plugins can be included/required on a given page file as needed, or you can load it globally to be used on every page. To add a plugin, simply copy/upload the plugin's folder to the `plugins` directory. To enable a plugin globally, add it's folder name to the `$plugins` array in `config.php`.
+## Enabling Plugins
+Plugins can be included/required on a given page file as needed, or you can load it globally to be used on every page. To add a plugin, simply copy/upload the plugin's folder to the `plugins` directory.
 
+To enable a plugin globally, add it's folder name to the `$plugins` array in `config.php`:
+```php
+$plugins = [
+  'md'
+];
+```
+To enable a plugin only when a certain URI is matched, set a string key to  check if the incoming URI starts with it:
+```php
+$plugins = [
+  '/admin' => 'admin' // only loaded when /admin* is requested
+];
+```
+
+## Plugin Example
 Below is an example plugin for using Parsedown via a wrapper method:
 
 **NOTE: When including/requiring files within a plugin, make sure to use the `__DIR__` global to ensure PHP looks *within* the plugin directory and not in the root directory of the site**
@@ -130,5 +143,5 @@ $plugins = [
 
 `pages/some-page.php`
 ```php
-<?= md('path/to/markdown-file.md') ?>
+<?= md('content/markdown-file.md') ?>
 ```

@@ -1,7 +1,7 @@
 {
     "name": "ginger-tek/jerpy",
     "type": "project",
-    "description": "Small, flat-file PHP website",
+    "description": "Simple, extendable, flat-file PHP website",
     "homepage": "https://github.com/ginger-tek/jerpy",
     "license": "ISC",
     "authors": [

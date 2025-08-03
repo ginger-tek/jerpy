@@ -17,12 +17,12 @@
   RewriteRule ^layouts/* index.php [L,NC]
   RewriteRule ^robots.txt robots.txt [L,NC]
 
-    ## Paths explicitly handled by the server
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteCond %{REQUEST_FILENAME} !/.well-known/*
-    RewriteCond %{REQUEST_FILENAME} !/content/.*
-    RewriteCond %{REQUEST_FILENAME} !/assets/.*
-    RewriteRule !^index.php index.php [L,NC]
+  ## Paths explicitly handled by the server
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteCond %{REQUEST_FILENAME} !/.well-known/*
+  RewriteCond %{REQUEST_FILENAME} !/content/.*
+  RewriteCond %{REQUEST_FILENAME} !/assets/.*
+  RewriteRule !^index.php index.php [L,NC]
 
   ## Block all PHP files, except index
   RewriteCond %{REQUEST_FILENAME} -f

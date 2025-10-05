@@ -11,7 +11,8 @@
       "runtimeArgs": [
         "-S",
         "localhost:8080",
-        "index.php"
+        "-t",
+        "."
       ],
       "cwd": "${workspaceRoot}",
       "port": 9003,

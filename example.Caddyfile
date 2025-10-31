@@ -1,21 +1,11 @@
 # php-cgi -d xdebug.mode=debug -d xdebug.client_host=127.0.0.1 -d xdebug.client_port=9003 -d xdebug.start_with_request=yes -b 9001
 
 http://localhost:8080 {
+	root * ./public
 	encode gzip
-	@static {
-		path /assets/*
-		path /plugins/*/assets/*
+	php_fastcgi 127.0.0.1:9001 {
+		try_files {path} /index.php
+		capture_stderr
 	}
-	@forbiddenFiles {
-		not path /assets/*
-		not path /plugins/*/assets/*
-	}
-	respond @forbiddenFiles 404
-	handle @static {
-		file_server
-	}
-	handle {
-		rewrite * /index.php
-		php_fastcgi 127.0.0.1:9001
-	}
+	file_server
 }

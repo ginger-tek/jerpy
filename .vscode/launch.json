@@ -14,7 +14,7 @@
         "-t",
         "."
       ],
-      "cwd": "${workspaceRoot}",
+      "cwd": "${workspaceRoot}/public",
       "port": 9003,
       "serverReadyAction": {
         "action": "openExternally"

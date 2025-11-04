@@ -2,10 +2,15 @@
 
 http://localhost:8080 {
 	root * ./public
-	encode gzip
-	php_fastcgi 127.0.0.1:9001 {
-		try_files {path} /index.php
-		capture_stderr
-	}
+	encode zstd gzip
 	file_server
+	php_fastcgi 127.0.0.1:9001 {
+		try_files {path} index.php
+		capture_stderr
+		resolve_root_symlink
+	}
+	@phpFile {
+		path *.php*
+	}
+	error @phpFile "Not found" 404
 }

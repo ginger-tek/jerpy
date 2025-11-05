@@ -12,7 +12,9 @@
         "-S",
         "localhost:8080",
         "-t",
-        "."
+        ".",
+        "-f",
+        "index.php"
       ],
       "cwd": "${workspaceRoot}",
       "port": 9003,

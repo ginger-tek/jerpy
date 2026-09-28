@@ -23,7 +23,7 @@
         "website"
     ],
     "require": {
-        "php": ">=8.2.0"
+        "php": ">=8.4.0"
     },
     "support": {
         "issues": "https://github.com/ginger-tek/jerpy/issues",

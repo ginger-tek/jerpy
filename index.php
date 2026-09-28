@@ -6,8 +6,10 @@
  * @license     MIT public license
  */
 
-set_exception_handler(function (Throwable $ex) {
-  ob_clean();
+const ROOT = __DIR__;
+header_remove('x-powered-by');
+set_exception_handler(function (Throwable $ex) use (&$error_text) {
+  ob_get_status() && ob_end_clean();
   error_log("[" . date('r') . "] {$ex->getMessage()}: {$ex->getTraceAsString()}");
   exit('<style>body{font-family:monospace;color:#fff;font-size:2em;background:#444;padding:5em;text-align:center}</style>
   <p>⚠<br>Something went wrong while showing this page<br>Contact the site admin for assistance</p>');

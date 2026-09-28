@@ -11,8 +11,8 @@ header_remove('x-powered-by');
 set_exception_handler(function (Throwable $ex) use (&$error_text) {
   ob_get_status() && ob_end_clean();
   error_log("[" . date('r') . "] {$ex->getMessage()}: {$ex->getTraceAsString()}");
-  exit('<style>body{font-family:monospace;color:#fff;font-size:2em;background:#444;padding:5em;text-align:center}</style>
-  <p>⚠<br>Something went wrong while showing this page<br>Contact the site admin for assistance</p>');
+  exit('<style>body{font-family:monospace;color:#fff;font-size:2em;background:#444;padding:5em 1em;text-align:center}</style>'
+    . ($error_text ?? '<p>⚠<br>Something went wrong while showing this page<br>Contact the site admin for assistance</p>'));
 });
 require 'config.php';
 date_default_timezone_set($timezone ?? 'America/New_York');

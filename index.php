@@ -27,9 +27,9 @@ if (
       ? $params = $m : false; }) ?? false)
 )
   [http_response_code(404), $res = end($routes)];
-ob_start();
 (is_array($res) ? extract($res) : $page = $res);
 $page = "pages/$page";
 $meta ??= [];
+ob_start();
 include $layout === false ? $page : "layouts/$layout.php";
 ob_end_flush();

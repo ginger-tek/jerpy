@@ -20,7 +20,7 @@ $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') ?: '/';
 $params = [];
 foreach ($plugins as $r => $p)
   if ((is_string($r) && str_starts_with($uri, $r) && $p) || (!is_string($r) && $p))
-    @include "plugins/$p/$p.php";
+    is_file("plugins/$p/$p.php") && include "plugins/$p/$p.php";
 if (
   !($res = $routes[$uri] ?? current(array_filter($routes, function ($k) use (&$params, $uri) {
     return preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w\@\#\%\&\+\=\_\-]+)', $k) . '$#', $uri, $m)

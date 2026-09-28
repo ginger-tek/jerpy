@@ -22,9 +22,9 @@ foreach ($plugins as $r => $p)
   if ((is_string($r) && str_starts_with($uri, $r) && $p) || (!is_string($r) && $p))
     is_file("plugins/$p/$p.php") && include "plugins/$p/$p.php";
 if (
-  !($res = $routes[$uri] ?? current(array_filter($routes, function ($k) use (&$params, $uri) {
+  !($res = $routes[$uri] ?? array_find($routes, function ($_, $k) use (&$params, $uri) {
     return preg_match('#^' . preg_replace('#:(\w+)#', '(?<$1>[\w\@\#\%\&\+\=\_\-]+)', $k) . '$#', $uri, $m)
-      ? $params = $m : false; }, ARRAY_FILTER_USE_KEY)) ?? false)
+      ? $params = $m : false; }) ?? false)
 )
   [http_response_code(404), $res = end($routes)];
 ob_start();

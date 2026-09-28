@@ -13,6 +13,8 @@ Jerpy a simple, extendable, flat-file simple website system built for control an
 ```
 composer create-project ginger-tek/jerpy <directory>
 ```
+## Local Server
+While a VSCode launch profile is included, the built-in PHP dev server may not suffice for certain scenarios, such as serving assets from the plugins directory, where the Apache .htaccess can out-of-the-box. If using caddy, an example Caddyfile is included that can also be used for both local development and production deployment, and the "Listen for Xdebug" launch config can be used to debug the php-cgi process.
 
 # Files & Folders
 - ## `config.php`

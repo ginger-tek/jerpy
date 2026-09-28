@@ -16,7 +16,7 @@ composer create-project ginger-tek/jerpy <directory>
 
 # Files & Folders
 - ## `config.php`
-  Set the timezone override, selected layout, enabled global plugins, and page routes here.
+  Set the configurations and page routes here.
 - ## `layouts`
   Stores layout templates, each their own `.php` file. The default global theme is set in `config.php` via the `$layout` property. The value is just the file name with no extension.
 - ## `assets`
@@ -120,7 +120,7 @@ $plugins = [
 ## Plugin Example
 Below is an example plugin for using Parsedown via a wrapper method:
 
-**NOTE: When including/requiring files within a plugin, make sure to use the `__DIR__` global to ensure PHP looks *within* the plugin directory and not in the root directory of the site**
+**NOTE: When including/requiring files within a plugin, make sure to use the `__DIR__` global to ensure PHP looks *within* the plugin directory and not in the root directory of the site. To help access files outside the plugins folder, use the `ROOT` global constant which points to the root of the site.**
 
 `plugins/md/md.php`
 ```php
@@ -130,7 +130,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 function md(string $path): string
 {
-  return (new Parsedown)->text(file_get_contents($path));
+  return (new Parsedown)->text(file_get_contents(ROOT . "/$path"));
 }
 ```
 

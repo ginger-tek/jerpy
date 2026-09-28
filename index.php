@@ -16,7 +16,7 @@ set_exception_handler(function (Throwable $ex) use (&$error_text) {
 });
 require 'config.php';
 date_default_timezone_set($timezone ?? 'America/New_York');
-$uri = parse_url(rtrim($_SERVER['REQUEST_URI'], '/') ?: '/', PHP_URL_PATH);
+$uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') ?: '/';
 $params = [];
 foreach ($plugins as $r => $p)
   if ((is_string($r) && str_starts_with($uri, $r) && $p) || (!is_string($r) && $p))

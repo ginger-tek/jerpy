@@ -5,6 +5,10 @@
 
   RewriteEngine On
 
+  ## Route Apache-level denials (including protected dotfiles) through the application
+  ErrorDocument 403 /index.php
+  ErrorDocument 404 /index.php
+
   ## You may need to uncomment the following line for some hosting environments,
   ## if you have installed to a subdirectory, enter the name here also.
   # RewriteBase /
@@ -13,29 +17,12 @@
   # RewriteCond %{HTTPS} off
   # RewriteRule (.*) https://%{SERVER_NAME}/$1 [L,R=301]
 
-  ## Paths explicitly blocked from being handled by the server
-  RewriteRule ^config.php index.php [L,NC]
-  RewriteRule ^pages/.* index.php [L,NC]
-  RewriteRule ^content/.* index.php [L,NC]
-  RewriteRule ^vendor/.* index.php [L,NC]
-  RewriteRule ^plugins/(?![^/]+/assets/) index.php [L,NC]
-  RewriteRule ^layouts/.* index.php [L,NC]
-
-  ## Paths explicitly handled by the server
-  RewriteCond %{REQUEST_FILENAME} -fs
-  RewriteCond %{REQUEST_FILENAME} !/.well-known/.*
-  RewriteCond %{REQUEST_FILENAME} !/content/.*
-  RewriteCond %{REQUEST_FILENAME} !/assets/.*
-  RewriteRule !^index.php index.php [L,NC]
-
-  ## Block all PHP files, except index
+  ## Only serve existing files from explicitly public directories
   RewriteCond %{REQUEST_FILENAME} -f
-  RewriteCond %{REQUEST_FILENAME} \.php$
-  RewriteRule !^index.php index.php [L,NC]
+  RewriteRule ^(?:(?:assets/|plugins/(?:[^/]+/)*assets/|\.well-known/).+|robots\.txt|sitemap\.xml)$ - [END,NC]
 
-  ## Standard routes
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^ index.php [L]
+  ## Route every other request through the application
+  RewriteRule ^ index.php [END]
 </IfModule>
 
 ## Caching
@@ -71,11 +58,11 @@
 ## Cache asset and media files
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType image/jpg "access 1 year"
-  ExpiresByType image/jpeg "access 1 year"
-  ExpiresByType image/gif "access 1 year"
-  ExpiresByType image/png "access 1 year"
-  ExpiresByType application/pdf "access 1 month"
-  ExpiresByType image/x-icon "access 1 year"
-  ExpiresDefault "access 1 hour"
+  ExpiresByType image/jpg "access 1 day"
+  ExpiresByType image/jpeg "access 1 day"
+  ExpiresByType image/gif "access 1 day"
+  ExpiresByType image/png "access 1 day"
+  ExpiresByType application/pdf "access 1 day"
+  ExpiresByType image/x-icon "access 1 day"
+  ExpiresDefault "access 5 minutes"
 </IfModule>

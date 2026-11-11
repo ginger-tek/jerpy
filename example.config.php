@@ -8,15 +8,15 @@ $plugins = [];
 
 $routes = [
   '/' => [
-    'page' => 'home.php',
+    'page' => 'home',
     'meta' => ['title' => 'Home']
   ],
   '/about' => [
-    'page' => 'about.php',
+    'page' => 'about',
     'meta' => ['title' => 'About']
   ],
   '404' => [
-    'page' => 'notFound.php',
+    'page' => 'notFound',
     'meta' => ['title' => 'Page Not Found']
   ]
 ];

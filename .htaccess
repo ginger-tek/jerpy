@@ -19,7 +19,7 @@
 
   ## Only serve existing files from explicitly public directories
   RewriteCond %{REQUEST_FILENAME} -f
-  RewriteRule ^(?:(?:assets/|plugins/(?:[^/]+/)*assets/|\.well-known/).+|robots\.txt|sitemap\.xml)$ - [END,NC]
+  RewriteRule ^(?:(?:assets/|plugins/(?:[^/]+/)*assets/|media/|\.well-known/).+|robots\.txt|sitemap\.xml)$ - [END,NC]
 
   ## Route every other request through the application
   RewriteRule ^ index.php [END]

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @version     4.7.0
  * @author      GingerTek
  * @copyright   Copyright (c), GingerTek
  * @license     MIT public license

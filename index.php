@@ -7,6 +7,7 @@
  * @license     ISC public license
  */
 
+declare(strict_types=1);
 const ROOT = __DIR__;
 header_remove('x-powered-by');
 set_exception_handler(function (Throwable $ex) use (&$error_text) {

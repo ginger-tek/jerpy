@@ -2,7 +2,7 @@
 
 http://localhost:8080 {
 	encode gzip
-	@pluginAssets path_regexp ^(/assets/|/plugins/[^/]+/assets/).+
+	@pluginAssets path_regexp ^(/assets/|/media/|/plugins/[^/]+/assets/).+
 	route @pluginAssets {
 		file_server
 	}

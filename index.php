@@ -9,6 +9,12 @@
 
 declare(strict_types=1);
 const ROOT = __DIR__;
+ini_set('display_errors', '0');
+header_remove('X-Powered-By');
+header_remove('Server');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 function render(array $res)
 {
   global $layout;

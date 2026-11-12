@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     4.7.0
+ * @version     4.7.1
  * @author      GingerTek
  * @copyright   Copyright (c), GingerTek
  * @license     ISC public license
@@ -17,7 +17,7 @@ header('X-Frame-Options: DENY');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 function render(array $res)
 {
-  global $layout;
+  global $layout, $params, $uri;
   ob_start() && extract($res, EXTR_OVERWRITE);
   $page = ROOT . "/pages/{$res['page']}.php";
   include $layout == false ? $page : ROOT . "/layouts/$layout.php";
